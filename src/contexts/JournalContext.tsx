@@ -20,6 +20,7 @@ interface JournalContextType {
     entries: JournalEntry[];
     loading: boolean;
     addEntry: (content: string, mood?: string) => void;
+    editEntry: (id: string, content: string, mood?: string) => void;
     deleteEntry: (id: string) => void;
 }
 
@@ -84,13 +85,47 @@ export function JournalProvider({ children }: { children: ReactNode }) {
         [user]
     );
 
+    const editEntry = useCallback(
+        async (id: string, content: string, mood?: string) => {
+            const trimmedContent = content.trim();
+            if (!user || !trimmedContent) return;
+
+            const { data } = await supabase
+                .from("journal_entries")
+                .update({
+                    content: trimmedContent,
+                    mood: mood || null,
+                })
+                .eq("id", id)
+                .eq("user_id", user.id)
+                .select()
+                .single();
+
+            if (data) {
+                setEntries((prev) =>
+                    prev.map((entry) =>
+                        entry.id === id
+                            ? {
+                                ...entry,
+                                content: data.content,
+                                mood: data.mood,
+                                createdAt: data.created_at,
+                            }
+                            : entry
+                    )
+                );
+            }
+        },
+        [user]
+    );
+
     const deleteEntry = useCallback(async (id: string) => {
         setEntries((prev) => prev.filter((e) => e.id !== id));
         await supabase.from("journal_entries").delete().eq("id", id);
     }, []);
 
     return (
-        <JournalContext.Provider value={{ entries, loading, addEntry, deleteEntry }}>
+        <JournalContext.Provider value={{ entries, loading, addEntry, editEntry, deleteEntry }}>
             {children}
         </JournalContext.Provider>
     );

@@ -103,31 +103,127 @@ export type Database = {
       }
       meals: {
         Row: {
+          calories: number | null
+          carbs: number | null
           created_at: string
           day: string
+          eaten_at: string | null
+          fats: number | null
           id: string
+          ingredients: string[]
+          meal_time: string | null
           name: string
+          notes: string | null
+          prep_ahead: boolean
+          protein: number | null
+          scheduled_date: string
+          status: string
+          tags: string[]
           type: string
           updated_at: string
           user_id: string
+          water_ml: number | null
         }
         Insert: {
+          calories?: number | null
+          carbs?: number | null
           created_at?: string
           day: string
+          eaten_at?: string | null
+          fats?: number | null
           id?: string
+          ingredients?: string[]
+          meal_time?: string | null
           name: string
+          notes?: string | null
+          prep_ahead?: boolean
+          protein?: number | null
+          scheduled_date: string
+          status?: string
+          tags?: string[]
           type: string
           updated_at?: string
           user_id: string
+          water_ml?: number | null
         }
         Update: {
+          calories?: number | null
+          carbs?: number | null
           created_at?: string
           day?: string
+          eaten_at?: string | null
+          fats?: number | null
           id?: string
+          ingredients?: string[]
+          meal_time?: string | null
           name?: string
+          notes?: string | null
+          prep_ahead?: boolean
+          protein?: number | null
+          scheduled_date?: string
+          status?: string
+          tags?: string[]
           type?: string
           updated_at?: string
           user_id?: string
+          water_ml?: number | null
+        }
+        Relationships: []
+      }
+      meal_templates: {
+        Row: {
+          calories: number | null
+          carbs: number | null
+          created_at: string
+          fats: number | null
+          id: string
+          ingredients: string[]
+          meal_time: string | null
+          name: string
+          notes: string | null
+          prep_ahead: boolean
+          protein: number | null
+          tags: string[]
+          type: string
+          updated_at: string
+          user_id: string
+          water_ml: number | null
+        }
+        Insert: {
+          calories?: number | null
+          carbs?: number | null
+          created_at?: string
+          fats?: number | null
+          id?: string
+          ingredients?: string[]
+          meal_time?: string | null
+          name: string
+          notes?: string | null
+          prep_ahead?: boolean
+          protein?: number | null
+          tags?: string[]
+          type: string
+          updated_at?: string
+          user_id: string
+          water_ml?: number | null
+        }
+        Update: {
+          calories?: number | null
+          carbs?: number | null
+          created_at?: string
+          fats?: number | null
+          id?: string
+          ingredients?: string[]
+          meal_time?: string | null
+          name?: string
+          notes?: string | null
+          prep_ahead?: boolean
+          protein?: number | null
+          tags?: string[]
+          type?: string
+          updated_at?: string
+          user_id?: string
+          water_ml?: number | null
         }
         Relationships: []
       }
@@ -250,34 +346,115 @@ export type Database = {
       }
       workouts: {
         Row: {
+          calories: number | null
+          completed_at: string | null
           created_at: string
           day: string
           done: boolean
           duration: string
+          equipment: string | null
+          exercises: Json
           id: string
+          intensity: string
+          location: string | null
+          notes: string | null
+          scheduled_date: string
+          tags: string[]
           updated_at: string
           user_id: string
+          workout_type: string
           workout_name: string
         }
         Insert: {
+          calories?: number | null
+          completed_at?: string | null
           created_at?: string
           day: string
           done?: boolean
           duration: string
+          equipment?: string | null
+          exercises?: Json
           id?: string
+          intensity?: string
+          location?: string | null
+          notes?: string | null
+          scheduled_date: string
+          tags?: string[]
           updated_at?: string
           user_id: string
+          workout_type?: string
           workout_name: string
         }
         Update: {
+          calories?: number | null
+          completed_at?: string | null
           created_at?: string
           day?: string
           done?: boolean
           duration?: string
+          equipment?: string | null
+          exercises?: Json
           id?: string
+          intensity?: string
+          location?: string | null
+          notes?: string | null
+          scheduled_date?: string
+          tags?: string[]
           updated_at?: string
           user_id?: string
+          workout_type?: string
           workout_name?: string
+        }
+        Relationships: []
+      }
+      workout_templates: {
+        Row: {
+          calories: number | null
+          created_at: string
+          duration: string
+          equipment: string | null
+          exercises: Json
+          id: string
+          intensity: string
+          location: string | null
+          name: string
+          notes: string | null
+          tags: string[]
+          updated_at: string
+          user_id: string
+          workout_type: string
+        }
+        Insert: {
+          calories?: number | null
+          created_at?: string
+          duration?: string
+          equipment?: string | null
+          exercises?: Json
+          id?: string
+          intensity?: string
+          location?: string | null
+          name: string
+          notes?: string | null
+          tags?: string[]
+          updated_at?: string
+          user_id: string
+          workout_type?: string
+        }
+        Update: {
+          calories?: number | null
+          created_at?: string
+          duration?: string
+          equipment?: string | null
+          exercises?: Json
+          id?: string
+          intensity?: string
+          location?: string | null
+          name?: string
+          notes?: string | null
+          tags?: string[]
+          updated_at?: string
+          user_id?: string
+          workout_type?: string
         }
         Relationships: []
       }
