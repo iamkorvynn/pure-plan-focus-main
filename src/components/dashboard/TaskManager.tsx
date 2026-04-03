@@ -188,6 +188,7 @@ export default function TaskManager() {
   });
 
   const [editingMealId, setEditingMealId] = useState<string | null>(null);
+  const [showAddMeal, setShowAddMeal] = useState(false);
   const [mealDraft, setMealDraft] = useState<MealDraft>(createEmptyMealDraft);
   const [mealFilter, setMealFilter] = useState<'All' | 'Today' | 'This Week' | 'Planned' | 'Prepared' | 'Eaten'>('All');
   const [mealTypeFilter, setMealTypeFilter] = useState<'All' | MealType>('All');
@@ -204,11 +205,13 @@ export default function TaskManager() {
   });
 
   const [editingWorkoutId, setEditingWorkoutId] = useState<string | null>(null);
+  const [showAddWorkout, setShowAddWorkout] = useState(false);
   const [workoutDraft, setWorkoutDraft] = useState<WorkoutDraft>(createEmptyWorkoutDraft);
   const [workoutFilter, setWorkoutFilter] = useState<'All' | 'Today' | 'This Week' | 'Completed' | 'Missed'>('All');
   const [workoutTypeFilter, setWorkoutTypeFilter] = useState<'All' | WorkoutType>('All');
   const [workoutTagInput, setWorkoutTagInput] = useState('');
   const [selectedTemplateId, setSelectedTemplateId] = useState('');
+  const [showAddJournal, setShowAddJournal] = useState(false);
   const [journalContent, setJournalContent] = useState('');
   const [journalMood, setJournalMood] = useState<string | null>(null);
   const [editingJournalId, setEditingJournalId] = useState<string | null>(null);
@@ -241,6 +244,7 @@ export default function TaskManager() {
   const resetMealDraft = () => {
     setMealDraft(createEmptyMealDraft());
     setEditingMealId(null);
+    setShowAddMeal(false);
     setMealTagInput('');
     setMealIngredientInput('');
     setSelectedMealTemplateId('');
@@ -274,6 +278,7 @@ export default function TaskManager() {
 
   const startMealEdit = (meal: Meal) => {
     setEditingMealId(meal.id);
+    setShowAddMeal(true);
     setMealDraft({
       name: meal.name,
       type: meal.type,
@@ -296,6 +301,7 @@ export default function TaskManager() {
     setSelectedMealTemplateId(templateId);
     const template = mealTemplates.find((item) => item.id === templateId);
     if (!template) return;
+    setShowAddMeal(true);
 
     setMealDraft((prev) => ({
       ...prev,
@@ -375,6 +381,7 @@ export default function TaskManager() {
   const resetWorkoutDraft = () => {
     setWorkoutDraft(createEmptyWorkoutDraft());
     setEditingWorkoutId(null);
+    setShowAddWorkout(false);
     setWorkoutTagInput('');
     setSelectedTemplateId('');
   };
@@ -422,6 +429,7 @@ export default function TaskManager() {
 
   const startWorkoutEdit = (workout: Workout) => {
     setEditingWorkoutId(workout.id);
+    setShowAddWorkout(true);
     setWorkoutDraft({
       scheduledDate: workout.scheduledDate,
       workoutName: workout.workoutName,
@@ -441,6 +449,7 @@ export default function TaskManager() {
     setSelectedTemplateId(templateId);
     const template = templates.find((item) => item.id === templateId);
     if (!template) return;
+    setShowAddWorkout(true);
 
     setWorkoutDraft((prev) => ({
       ...prev,
@@ -504,6 +513,7 @@ export default function TaskManager() {
     setJournalContent('');
     setJournalMood(null);
     setEditingJournalId(null);
+    setShowAddJournal(false);
   };
 
   const handleJournalSave = () => {
@@ -528,6 +538,7 @@ export default function TaskManager() {
 
   const startJournalEdit = (entry: { id: string; content: string; mood: string | null }) => {
     setEditingJournalId(entry.id);
+    setShowAddJournal(true);
     setJournalContent(entry.content);
     setJournalMood(entry.mood);
   };
@@ -754,13 +765,15 @@ export default function TaskManager() {
     return (
       <>
         {habits.length === 0 ? (
-          <EmptyState
-            icon={Target}
-            title="No habits yet"
-            description="Add one repeating habit and start building a streak you can actually see grow."
-            actionLabel="Add habit"
-            onAction={() => setShowAddHabit(true)}
-          />
+          showAddHabit ? null : (
+            <EmptyState
+              icon={Target}
+              title="No habits yet"
+              description="Add one repeating habit and start building a streak you can actually see grow."
+              actionLabel="Add habit"
+              onAction={() => setShowAddHabit(true)}
+            />
+          )
         ) : (
           <div className="overflow-x-auto rounded-2xl border border-border/50 bg-gradient-to-br from-background/30 via-secondary/15 to-background/30">
             <table className="w-full min-w-[560px] text-sm">
@@ -836,33 +849,57 @@ export default function TaskManager() {
           </div>
         )}
 
-        <div className="space-y-2 border-t border-border p-4">
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <input
-              placeholder="Habit name"
-              value={newHabit.habitName}
-              onChange={(e) => setNewHabit({ ...newHabit, habitName: e.target.value })}
-              onKeyDown={(e) => e.key === 'Enter' && handleAddHabit()}
-              className="flex-1 rounded-md border border-border bg-input px-3 py-1.5 text-sm text-foreground outline-none"
-            />
+        {showAddHabit ? (
+          <div className="space-y-2 border-t border-border p-4">
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <input
+                placeholder="Habit name"
+                value={newHabit.habitName}
+                onChange={(e) => setNewHabit({ ...newHabit, habitName: e.target.value })}
+                onKeyDown={(e) => e.key === 'Enter' && handleAddHabit()}
+                className="flex-1 rounded-md border border-border bg-input px-3 py-1.5 text-sm text-foreground outline-none"
+                autoFocus
+              />
 
-            <input
-              placeholder="Day"
-              value={newHabit.day}
-              onChange={(e) => setNewHabit({ ...newHabit, day: e.target.value })}
-              className="rounded-md border border-border bg-input px-2 py-1 text-xs text-foreground outline-none sm:w-40"
-            />
+              <input
+                placeholder="Day"
+                value={newHabit.day}
+                onChange={(e) => setNewHabit({ ...newHabit, day: e.target.value })}
+                className="rounded-md border border-border bg-input px-2 py-1 text-xs text-foreground outline-none sm:w-40"
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                onClick={handleAddHabit}
+                className="rounded-md bg-primary px-4 py-1.5 text-xs text-primary-foreground transition-opacity hover:opacity-90"
+              >
+                Add Habit
+              </button>
+              <button
+                onClick={() => {
+                  setShowAddHabit(false);
+                  setNewHabit({
+                    habitName: '',
+                    day: '',
+                  });
+                }}
+                className="px-4 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
-
-          <div className="flex gap-2">
+        ) : habits.length > 0 ? (
+          <div className="border-t border-border p-4">
             <button
-              onClick={handleAddHabit}
-              className="rounded-md bg-primary px-4 py-1.5 text-xs text-primary-foreground transition-opacity hover:opacity-90"
+              onClick={() => setShowAddHabit(true)}
+              className="interactive-button rounded-xl border border-border/70 bg-secondary/40 px-4 py-2 text-xs text-muted-foreground transition-all hover:border-primary/25 hover:text-primary"
             >
-              Add Habit
+              Create habit
             </button>
           </div>
-        </div>
+        ) : null}
       </>
     );
   };
@@ -957,11 +994,12 @@ export default function TaskManager() {
           </div>
         </div>
 
-        <div className="space-y-4 rounded-2xl border border-border/70 bg-gradient-to-br from-background/60 via-secondary/15 to-background/70 p-4 md:p-5">
+        {showAddWorkout ? (
+          <div className="space-y-4 rounded-2xl border border-border/70 bg-gradient-to-br from-background/60 via-secondary/15 to-background/70 p-4 md:p-5">
           <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <div>
               <h3 className="text-sm font-semibold text-foreground">
-                {editingWorkoutId ? 'Edit Workout' : 'Plan Workout'}
+                {editingWorkoutId ? 'Edit Workout' : 'Create Workout'}
               </h3>
               <p className="text-xs text-muted-foreground">Schedule sessions, log exercises, and save routines as reusable templates.</p>
             </div>
@@ -993,6 +1031,7 @@ export default function TaskManager() {
               value={workoutDraft.workoutName}
               onChange={(e) => updateWorkoutDraft('workoutName', e.target.value)}
               className="rounded-md border border-border bg-input px-3 py-2 text-sm text-foreground outline-none"
+              autoFocus
             />
             <input
               type="date"
@@ -1165,10 +1204,11 @@ export default function TaskManager() {
               onClick={resetWorkoutDraft}
               className="rounded-md px-4 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
-              {editingWorkoutId ? 'Cancel Edit' : 'Clear Form'}
+              {editingWorkoutId ? 'Cancel Edit' : 'Cancel'}
             </button>
           </div>
-        </div>
+          </div>
+        ) : null}
 
         {templates.length > 0 && (
           <div className="space-y-2">
@@ -1224,7 +1264,7 @@ export default function TaskManager() {
               title="No workouts in this view"
               description="Try another filter or plan a new session to start building your weekly rhythm."
               actionLabel="Plan workout"
-              onAction={() => setActiveTab('Workout')}
+              onAction={() => setShowAddWorkout(true)}
             />
           ) : filteredWorkouts.map((workout) => (
             <div key={workout.id} className="rounded-lg border border-border p-4">
@@ -1371,10 +1411,11 @@ export default function TaskManager() {
           </div>
         </div>
 
-        <div className="space-y-4 rounded-2xl border border-border/70 bg-gradient-to-br from-background/60 via-secondary/15 to-background/70 p-4 md:p-5">
+        {showAddMeal ? (
+          <div className="space-y-4 rounded-2xl border border-border/70 bg-gradient-to-br from-background/60 via-secondary/15 to-background/70 p-4 md:p-5">
           <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-foreground">{editingMealId ? 'Edit Meal' : 'Plan Meal'}</h3>
+              <h3 className="text-sm font-semibold text-foreground">{editingMealId ? 'Edit Meal' : 'Create Meal'}</h3>
               <p className="text-xs text-muted-foreground">Schedule meals, track nutrition, and save go-to dishes as templates.</p>
             </div>
 
@@ -1404,6 +1445,7 @@ export default function TaskManager() {
               value={mealDraft.name}
               onChange={(e) => updateMealDraft('name', e.target.value)}
               className="rounded-md border border-border bg-input px-3 py-2 text-sm text-foreground outline-none"
+              autoFocus
             />
             <select
               value={mealDraft.type}
@@ -1557,10 +1599,11 @@ export default function TaskManager() {
               onClick={resetMealDraft}
               className="rounded-md px-4 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
-              {editingMealId ? 'Cancel Edit' : 'Clear Form'}
+              {editingMealId ? 'Cancel Edit' : 'Cancel'}
             </button>
           </div>
-        </div>
+          </div>
+        ) : null}
 
         {mealTemplates.length > 0 && (
           <div className="space-y-2">
@@ -1618,7 +1661,7 @@ export default function TaskManager() {
               onAction={() => {
                 setMealFilter('All');
                 setMealTypeFilter('All');
-                resetMealDraft();
+                setShowAddMeal(true);
               }}
             />
           ) : filteredMeals.map((meal) => (
@@ -1705,10 +1748,11 @@ export default function TaskManager() {
 
     return (
       <div className="p-4 space-y-3">
-        <div className="space-y-3 rounded-md border border-border p-3">
+        {showAddJournal ? (
+          <div className="space-y-3 rounded-md border border-border p-3">
           <div className="flex items-center justify-between">
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              {editingJournalId ? 'Edit Journal Entry' : 'New Journal Entry'}
+              {editingJournalId ? 'Edit Journal Entry' : 'Create Journal Entry'}
             </p>
             <span className="text-[11px] text-muted-foreground">
               Ctrl+Enter / Cmd+Enter to save
@@ -1743,6 +1787,7 @@ export default function TaskManager() {
             onKeyDown={handleJournalKeyDown}
             rows={5}
             className="w-full resize-none rounded-md border border-border bg-input px-3 py-2 text-sm text-foreground outline-none"
+            autoFocus
           />
 
           <div className="flex gap-2">
@@ -1758,15 +1803,29 @@ export default function TaskManager() {
               onClick={resetJournalComposer}
               className="px-4 py-1.5 text-xs text-muted-foreground hover:text-foreground"
             >
-              {editingJournalId ? 'Cancel Edit' : 'Clear'}
+              {editingJournalId ? 'Cancel Edit' : 'Cancel'}
             </button>
           </div>
-        </div>
-
-        {(entries || []).length === 0 ? (
-          <div className="rounded-xl border border-dashed border-border/70 bg-background/35 p-4 text-sm text-muted-foreground">
-            Your first entry will appear here once you save something above.
           </div>
+        ) : (entries || []).length > 0 ? (
+          <div className="border-t border-border p-4">
+            <button
+              onClick={() => setShowAddJournal(true)}
+              className="interactive-button rounded-xl border border-border/70 bg-secondary/40 px-4 py-2 text-xs text-muted-foreground transition-all hover:border-primary/25 hover:text-primary"
+            >
+              Create entry
+            </button>
+          </div>
+        ) : null}
+
+        {!showAddJournal && (entries || []).length === 0 ? (
+          <EmptyState
+            icon={NotebookText}
+            title="No journal entries yet"
+            description="Capture one thought, one mood, or one small win and your journal will start building itself."
+            actionLabel="Create entry"
+            onAction={() => setShowAddJournal(true)}
+          />
         ) : (entries || []).map((entry) => (
           <div key={entry.id} className="border border-border rounded-md p-3">
             {entry.mood && (

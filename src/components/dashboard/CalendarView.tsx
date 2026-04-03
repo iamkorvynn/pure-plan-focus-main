@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isToday, parseISO, startOfMonth, startOfWeek } from 'date-fns';
-import { CalendarDays, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { CalendarDays, ChevronLeft, ChevronRight, Dumbbell, Salad, Sparkles, Target } from 'lucide-react';
 import { useTaskContext } from '@/contexts/TaskContext';
 import { useMealContext, type MealType } from '@/contexts/MealContext';
 import { useWorkoutContext, type WorkoutType } from '@/contexts/WorkoutContext';
@@ -268,7 +268,15 @@ export default function CalendarView() {
                     {meal.status} {meal.mealTime ? `• ${meal.mealTime}` : ''}
                   </div>
                 </div>
-              )) : <p className="rounded-xl border border-dashed border-border/70 bg-background/35 p-4 text-xs text-muted-foreground">No meals planned for this date.</p>}
+              )) : (
+                <div className="rounded-xl border border-dashed border-border/70 bg-background/35 p-4 text-center">
+                  <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-xl border border-border/70 bg-secondary/40 text-warning">
+                    <Salad size={16} />
+                  </div>
+                  <p className="text-xs font-medium text-foreground">No meals planned</p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">Nothing is scheduled for this date yet.</p>
+                </div>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -283,7 +291,15 @@ export default function CalendarView() {
                     {workout.duration} min • {workout.intensity}
                   </div>
                 </div>
-              )) : <p className="rounded-xl border border-dashed border-border/70 bg-background/35 p-4 text-xs text-muted-foreground">No workouts scheduled here.</p>}
+              )) : (
+                <div className="rounded-xl border border-dashed border-border/70 bg-background/35 p-4 text-center">
+                  <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-xl border border-border/70 bg-secondary/40 text-primary">
+                    <Dumbbell size={16} />
+                  </div>
+                  <p className="text-xs font-medium text-foreground">No workouts scheduled</p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">This day is open for training or recovery.</p>
+                </div>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -293,7 +309,15 @@ export default function CalendarView() {
                   <div className="font-medium text-foreground">{habit.habitName}</div>
                   <div className="mt-1 text-muted-foreground">{habit.done ? 'Done' : 'Pending'} • {habit.day}</div>
                 </div>
-              )) : <p className="rounded-xl border border-dashed border-border/70 bg-background/35 p-4 text-xs text-muted-foreground">No habits tied to this weekday yet.</p>}
+              )) : (
+                <div className="rounded-xl border border-dashed border-border/70 bg-background/35 p-4 text-center">
+                  <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-xl border border-border/70 bg-secondary/40 text-success">
+                    <Target size={16} />
+                  </div>
+                  <p className="text-xs font-medium text-foreground">No habits for this day</p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">Nothing repeats on this weekday yet.</p>
+                </div>
+              )}
             </div>
 
             <div className="space-y-2 md:col-span-2 xl:col-span-2">

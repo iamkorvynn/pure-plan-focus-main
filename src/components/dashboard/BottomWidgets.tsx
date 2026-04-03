@@ -102,16 +102,27 @@ export function SidebarHabitWidget() {
       </div>
 
       {showAdd ? (
-        <div className="mt-4 flex gap-2">
-          <input
-            value={newHabit}
-            onChange={(e) => setNewHabit(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleAddHabit()}
-            placeholder="Habit name..."
-            className="flex-1 rounded-xl border border-border bg-input px-3 py-2 text-xs text-foreground outline-none transition-colors focus:border-primary/35"
-            autoFocus
-          />
-          <button onClick={handleAddHabit} className="rounded-xl bg-primary px-3 py-2 text-xs text-primary-foreground transition-transform duration-150 hover:opacity-90 active:scale-95">Add</button>
+        <div className="mt-4 space-y-2">
+          <div className="flex gap-2">
+            <input
+              value={newHabit}
+              onChange={(e) => setNewHabit(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleAddHabit()}
+              placeholder="Habit name..."
+              className="flex-1 rounded-xl border border-border bg-input px-3 py-2 text-xs text-foreground outline-none transition-colors focus:border-primary/35"
+              autoFocus
+            />
+            <button onClick={handleAddHabit} className="rounded-xl bg-primary px-3 py-2 text-xs text-primary-foreground transition-transform duration-150 hover:opacity-90 active:scale-95">Add</button>
+          </div>
+          <button
+            onClick={() => {
+              setShowAdd(false);
+              setNewHabit('');
+            }}
+            className="px-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Cancel
+          </button>
         </div>
       ) : (
         <button onClick={() => setShowAdd(true)} className="mt-4 w-full rounded-xl border border-border/70 bg-secondary/50 px-3 py-2 text-xs text-muted-foreground transition-all duration-200 hover:border-primary/25 hover:text-primary active:scale-[0.99]">
@@ -209,16 +220,27 @@ function ShoppingList() {
       </div>
 
       {showAdd ? (
-        <div className="mt-4 flex gap-2">
-          <input
-            value={newItem}
-            onChange={(e) => setNewItem(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && addItem()}
-            placeholder="Add item..."
-            className="flex-1 rounded-xl border border-border bg-input px-3 py-2 text-xs text-foreground outline-none transition-colors focus:border-success/35"
-            autoFocus
-          />
-          <button onClick={addItem} className="rounded-xl bg-success px-3 py-2 text-xs text-success-foreground transition-transform duration-150 hover:opacity-90 active:scale-95">Add</button>
+        <div className="mt-4 space-y-2">
+          <div className="flex gap-2">
+            <input
+              value={newItem}
+              onChange={(e) => setNewItem(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && addItem()}
+              placeholder="Add item..."
+              className="flex-1 rounded-xl border border-border bg-input px-3 py-2 text-xs text-foreground outline-none transition-colors focus:border-success/35"
+              autoFocus
+            />
+            <button onClick={addItem} className="rounded-xl bg-success px-3 py-2 text-xs text-success-foreground transition-transform duration-150 hover:opacity-90 active:scale-95">Add</button>
+          </div>
+          <button
+            onClick={() => {
+              setShowAdd(false);
+              setNewItem('');
+            }}
+            className="px-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Cancel
+          </button>
         </div>
       ) : (
         <button onClick={() => setShowAdd(true)} className="mt-4 w-full rounded-xl border border-border/70 bg-secondary/50 px-3 py-2 text-xs text-muted-foreground transition-all duration-200 hover:border-success/25 hover:text-success active:scale-[0.99]">
@@ -230,13 +252,18 @@ function ShoppingList() {
 }
 
 function Finance() {
-  const { items: entries, add } = useFinance();
+  const { items: entries, add, remove } = useFinance();
   const [showAdd, setShowAdd] = useState(false);
+  const [view, setView] = useState<'all' | FinanceEntry['type']>('all');
   const [newEntry, setNewEntry] = useState({ type: 'income' as FinanceEntry['type'], name: '', amount: '' });
 
   const totalIncome = entries.filter((entry) => entry.type === 'income').reduce((sum, entry) => sum + entry.amount, 0);
   const totalExpenses = entries.filter((entry) => entry.type === 'expense').reduce((sum, entry) => sum + entry.amount, 0);
   const balance = totalIncome - totalExpenses;
+  const recentEntries = [...entries]
+    .filter((entry) => view === 'all' || entry.type === view)
+    .slice(-4)
+    .reverse();
 
   const addEntry = () => {
     if (!newEntry.name.trim() || !newEntry.amount) return;
@@ -266,7 +293,60 @@ function Finance() {
           <span className="text-muted-foreground">Expenses</span>
           <span className="font-mono text-destructive">${totalExpenses.toFixed(2)}</span>
         </div>
+        <div className="flex justify-between rounded-xl border border-border/60 bg-background/55 px-3 py-2">
+          <span className="text-muted-foreground">Saved</span>
+          <span className={`font-mono ${balance >= 0 ? 'text-success' : 'text-destructive'}`}>${Math.abs(balance).toFixed(2)}</span>
+        </div>
       </div>
+
+      {entries.length > 0 && (
+        <>
+          <div className="mt-4 flex items-center justify-between">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Recent</span>
+            <div className="flex gap-1">
+              {(['all', 'income', 'expense'] as const).map((option) => (
+                <button
+                  key={option}
+                  onClick={() => setView(option)}
+                  className={`rounded-full px-2 py-1 text-[10px] transition-colors ${view === option
+                    ? 'bg-primary/15 text-primary'
+                    : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                >
+                  {option === 'all' ? 'All' : option === 'income' ? 'Income' : 'Expense'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-2 space-y-2">
+            {recentEntries.length > 0 ? recentEntries.map((entry) => (
+              <div key={entry.id} className="flex items-center gap-2 rounded-xl border border-border/60 bg-background/55 px-3 py-2 text-xs transition-all duration-200 hover:border-primary/25 hover:bg-secondary/40">
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${entry.type === 'income' ? 'bg-success/15 text-success' : 'bg-destructive/15 text-destructive'}`}>
+                  {entry.type}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate font-medium text-foreground">{entry.name}</div>
+                </div>
+                <span className={`font-mono text-[11px] ${entry.type === 'income' ? 'text-success' : 'text-destructive'}`}>
+                  {entry.type === 'income' ? '+' : '-'}${entry.amount.toFixed(0)}
+                </span>
+                <button
+                  onClick={() => remove(entry.id)}
+                  className="text-[10px] text-muted-foreground transition-colors hover:text-destructive active:scale-95"
+                >
+                  x
+                </button>
+              </div>
+            )) : (
+              <div className="rounded-xl border border-dashed border-border/70 px-3 py-3 text-[11px] text-muted-foreground">
+                No {view} entries yet.
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
       {entries.length === 0 && !showAdd && (
         <div className="mt-4 rounded-xl border border-dashed border-border/70 px-3 py-4 text-center">
           <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-xl border border-border/70 bg-secondary/35 text-primary">
@@ -290,6 +370,15 @@ function Finance() {
             <input type="number" value={newEntry.amount} onChange={(e) => setNewEntry({ ...newEntry, amount: e.target.value })} onKeyDown={(e) => e.key === 'Enter' && addEntry()} placeholder="Amount" className="flex-1 rounded-xl border border-border bg-input px-3 py-2 text-xs text-foreground outline-none" />
             <button onClick={addEntry} className="rounded-xl bg-primary px-3 py-2 text-xs text-primary-foreground transition-transform duration-150 hover:opacity-90 active:scale-95">Add</button>
           </div>
+          <button
+            onClick={() => {
+              setShowAdd(false);
+              setNewEntry({ type: 'income', name: '', amount: '' });
+            }}
+            className="px-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Cancel
+          </button>
         </div>
       ) : (
         <button onClick={() => setShowAdd(true)} className="mt-4 w-full rounded-xl border border-border/70 bg-secondary/50 px-3 py-2 text-xs text-muted-foreground transition-all duration-200 hover:border-primary/25 hover:text-primary active:scale-[0.99]">

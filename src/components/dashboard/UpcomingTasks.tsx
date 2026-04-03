@@ -132,17 +132,28 @@ export default function UpcomingTasks() {
               )}
 
               {showNewInput === group.label ? (
-                <div className="flex gap-2">
-                  <input
-                    value={newName}
-                    onChange={(e) => setNewName(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleQuickAdd(group.dueDate, group.label)}
-                    placeholder={`Add ${group.label.toLowerCase()} task...`}
-                    className="flex-1 rounded-xl border border-border bg-input px-3 py-2 text-xs text-foreground outline-none transition-colors focus:border-primary/35"
-                    autoFocus
-                  />
-                  <button onClick={() => handleQuickAdd(group.dueDate, group.label)} className="rounded-xl bg-primary px-3 py-2 text-xs text-primary-foreground transition-transform duration-150 hover:opacity-90 active:scale-95">
-                    Add
+                <div className="space-y-2">
+                  <div className="flex gap-2">
+                    <input
+                      value={newName}
+                      onChange={(e) => setNewName(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleQuickAdd(group.dueDate, group.label)}
+                      placeholder={`Add ${group.label.toLowerCase()} task...`}
+                      className="flex-1 rounded-xl border border-border bg-input px-3 py-2 text-xs text-foreground outline-none transition-colors focus:border-primary/35"
+                      autoFocus
+                    />
+                    <button onClick={() => handleQuickAdd(group.dueDate, group.label)} className="rounded-xl bg-primary px-3 py-2 text-xs text-primary-foreground transition-transform duration-150 hover:opacity-90 active:scale-95">
+                      Add
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setShowNewInput(null);
+                      setNewName('');
+                    }}
+                    className="px-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    Cancel
                   </button>
                 </div>
               ) : (
