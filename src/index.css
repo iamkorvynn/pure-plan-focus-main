@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 92%;
+
+    --card: 0 5% 4%;
+    --card-foreground: 0 0% 92%;
+
+    --popover: 0 5% 6%;
+    --popover-foreground: 0 0% 92%;
+
+    --primary: 0 100% 27%;
+    --primary-foreground: 0 0% 95%;
+
+    --secondary: 0 3% 8%;
+    --secondary-foreground: 0 0% 88%;
+
+    --muted: 0 3% 12%;
+    --muted-foreground: 0 5% 50%;
+
+    --accent: 0 100% 27%;
+    --accent-foreground: 0 0% 95%;
+
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 95%;
+
+    --border: 0 20% 14%;
+    --input: 0 10% 12%;
+    --ring: 0 100% 27%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 2%;
+    --sidebar-foreground: 0 0% 80%;
+    --sidebar-primary: 0 100% 27%;
+    --sidebar-primary-foreground: 0 0% 95%;
+    --sidebar-accent: 0 20% 10%;
+    --sidebar-accent-foreground: 0 0% 85%;
+    --sidebar-border: 0 15% 12%;
+    --sidebar-ring: 0 100% 27%;
+
+    --warning: 30 80% 50%;
+    --success: 142 60% 40%;
+    --info: 0 40% 50%;
+
+    --crimson-glow: 0 100% 27%;
+    --crimson-soft: 0 60% 20%;
+    --maroon: 0 40% 18%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-family: 'Inter', sans-serif;
+    background: #000000;
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+
+  .glass-panel {
+    backdrop-filter: blur(20px);
+    background: rgba(10, 10, 10, 0.8);
+  }
+
+  .crimson-glow {
+    box-shadow: 0 0 20px rgba(139, 0, 0, 0.3), 0 0 40px rgba(139, 0, 0, 0.1);
+  }
+
+  .crimson-glow-sm {
+    box-shadow: 0 0 8px rgba(139, 0, 0, 0.25);
+  }
+
+  .font-mono-data {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
