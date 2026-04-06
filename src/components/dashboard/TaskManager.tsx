@@ -1876,18 +1876,15 @@ export default function TaskManager() {
   };
 
   return (
-    <div className="bento-panel bento-panel--feature ambient-orb">
-      <div className="flex items-center justify-between gap-4 border-b border-border/70 px-5 py-5">
-        <div>
-          <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">Primary workspace</p>
-          <h2 className="mt-2 font-display text-3xl text-foreground">Overview</h2>
-        </div>
+    <div className="glass-panel dashboard-card rounded-lg border border-border ambient-orb">
+      <div className="flex items-center justify-between border-b border-border p-4">
+        <h2 className="text-base font-semibold text-foreground">Overview</h2>
 
         {activeTab === 'Todo' ? (
           <select
             value={filterPriority}
             onChange={(e) => setFilterPriority(e.target.value)}
-            className="control-chip focus-glow interactive-button outline-none"
+            className="focus-glow interactive-button rounded-xl border border-border bg-input px-3 py-1.5 text-xs text-foreground outline-none"
           >
             <option value="All">All</option>
             <option value="High">High</option>
@@ -1899,7 +1896,7 @@ export default function TaskManager() {
         )}
       </div>
 
-      <div className="flex flex-wrap gap-2 border-b border-border/70 bg-gradient-to-r from-background/80 via-secondary/20 to-background/70 px-5 pb-4 pt-4">
+      <div className="flex flex-wrap gap-2 border-b border-border/70 bg-gradient-to-r from-background/70 via-secondary/20 to-background/70 px-4 pb-3 pt-3">
         {tabs.map((tab) => (
           <button
             key={tab}
@@ -1914,7 +1911,10 @@ export default function TaskManager() {
               setEditing(null);
               setEditingHabit(null);
             }}
-            className={`tab-pill focus-glow interactive-button ${activeTab === tab ? 'tab-pill-active' : ''}`}
+            className={`interactive-button rounded-xl px-3 py-2 text-xs font-medium transition-all ${activeTab === tab
+              ? 'border border-primary/25 bg-gradient-to-b from-primary/25 to-primary/10 text-primary shadow-[inset_0_1px_0_rgba(255,240,226,0.18),0_10px_24px_rgba(198,93,46,0.08)]'
+              : 'border border-transparent text-muted-foreground hover:border-border/70 hover:bg-secondary/35 hover:text-foreground'
+              }`}
           >
             {tab}
           </button>
