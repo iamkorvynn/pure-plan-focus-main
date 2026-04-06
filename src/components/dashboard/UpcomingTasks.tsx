@@ -56,17 +56,18 @@ export default function UpcomingTasks() {
   };
 
   return (
-    <section className="rounded-2xl border border-border/70 bg-gradient-to-br from-background via-background to-primary/5 shadow-[0_12px_40px_rgba(10,10,10,0.08)]">
-      <div className="border-b border-border/70 p-4">
+    <section className="bento-panel">
+      <div className="border-b border-border/70 p-5">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Upcoming</h3>
-            <p className="text-[11px] text-muted-foreground">Focus queue for the next few days.</p>
+            <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Momentum queue</p>
+            <h3 className="mt-2 font-display text-2xl text-foreground">Upcoming</h3>
+            <p className="mt-1 text-sm text-muted-foreground">Focus queue for the next few days.</p>
           </div>
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="focus-glow interactive-button rounded-xl border border-border bg-input px-2 py-1 text-xs text-muted-foreground outline-none transition-colors hover:border-primary/25"
+            className="control-chip focus-glow interactive-button text-xs text-muted-foreground outline-none transition-colors hover:border-primary/25"
           >
             <option value="All">All</option>
             <option value="High">High</option>

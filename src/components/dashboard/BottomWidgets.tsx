@@ -40,7 +40,7 @@ export function SidebarHabitWidget() {
   };
 
   return (
-    <section className="group rounded-2xl border border-border/70 bg-gradient-to-br from-background via-background to-secondary/30 p-4 shadow-[0_12px_40px_rgba(10,10,10,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_20px_50px_rgba(10,10,10,0.12)]">
+    <section className="bento-panel interactive-card p-4">
       <div className="mb-3 flex items-center justify-between">
         <div>
           <h3 className="text-sm font-semibold text-foreground">Habit Tracker</h3>
@@ -140,7 +140,7 @@ function MealPlanner() {
   const calorieTotal = todaysMeals.reduce((sum, meal) => sum + (meal.calories ?? 0), 0);
 
   return (
-    <section className="group rounded-2xl border border-border/70 bg-gradient-to-br from-background via-background to-warning/5 p-4 shadow-[0_12px_40px_rgba(10,10,10,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-warning/25 hover:shadow-[0_20px_50px_rgba(10,10,10,0.12)]">
+    <section className="bento-panel interactive-card p-4">
       <div className="mb-3 flex items-center justify-between">
         <div>
           <h3 className="text-sm font-semibold text-foreground">Meal Planner</h3>
@@ -192,7 +192,7 @@ function ShoppingList() {
   };
 
   return (
-    <section className="group rounded-2xl border border-border/70 bg-gradient-to-br from-background via-background to-success/5 p-4 shadow-[0_12px_40px_rgba(10,10,10,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-success/25 hover:shadow-[0_20px_50px_rgba(10,10,10,0.12)]">
+    <section className="bento-panel interactive-card p-4">
       <div className="mb-3 flex items-center justify-between">
         <div>
           <h3 className="text-sm font-semibold text-foreground">Shopping List</h3>
@@ -273,7 +273,7 @@ function Finance() {
   };
 
   return (
-    <section className="group rounded-2xl border border-border/70 bg-gradient-to-br from-background via-background to-primary/5 p-4 shadow-[0_12px_40px_rgba(10,10,10,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_20px_50px_rgba(10,10,10,0.12)]">
+    <section className="bento-panel interactive-card p-4">
       <div className="mb-3 flex items-center justify-between">
         <div>
           <h3 className="text-sm font-semibold text-foreground">Finance</h3>

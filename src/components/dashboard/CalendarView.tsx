@@ -111,25 +111,26 @@ export default function CalendarView() {
   };
 
   return (
-    <div className="glass-panel dashboard-card rounded-lg border border-border ambient-orb">
-      <div className="flex items-center justify-between border-b border-border p-4">
+    <div className="bento-panel ambient-orb">
+      <div className="flex items-center justify-between border-b border-border/70 px-5 py-5">
         <div>
-          <h2 className="text-base font-semibold text-foreground">Calendar</h2>
-          <p className="text-xs text-muted-foreground">Plan across tasks, meals, workouts, habits, and journal check-ins.</p>
+          <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">Board timeline</p>
+          <h2 className="mt-2 font-display text-3xl text-foreground">Calendar</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Plan across tasks, meals, workouts, habits, and journal check-ins.</p>
         </div>
       </div>
 
-      <div className="space-y-4 p-4">
+      <div className="space-y-4 p-5">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <span className="text-sm font-medium text-foreground">{monthName}</span>
+          <span className="text-base font-semibold text-foreground">{monthName}</span>
           <div className="flex items-center gap-1">
-            <button onClick={prevMonth} className="interactive-button focus-glow rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground">
+            <button onClick={prevMonth} className="control-chip interactive-button focus-glow px-3 py-2 text-muted-foreground transition-colors hover:text-foreground">
               <ChevronLeft size={14} strokeWidth={1.5} />
             </button>
-            <button onClick={goToday} className="interactive-button focus-glow rounded-md px-2 text-xs text-muted-foreground transition-colors hover:text-primary">
+            <button onClick={goToday} className="control-chip interactive-button focus-glow px-3 py-2 text-xs text-muted-foreground transition-colors hover:text-primary">
               Today
             </button>
-            <button onClick={nextMonth} className="interactive-button focus-glow rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground">
+            <button onClick={nextMonth} className="control-chip interactive-button focus-glow px-3 py-2 text-muted-foreground transition-colors hover:text-foreground">
               <ChevronRight size={14} strokeWidth={1.5} />
             </button>
           </div>
@@ -140,10 +141,7 @@ export default function CalendarView() {
             <button
               key={filter}
               onClick={() => toggleFilter(filter)}
-              className={`interactive-button rounded-full px-3 py-1.5 text-xs transition-all ${hasFilter(filter)
-                ? 'border border-primary/25 bg-primary/20 text-primary shadow-[inset_0_1px_0_rgba(255,240,226,0.16),0_0_0_1px_rgba(198,93,46,0.08)]'
-                : 'border border-border bg-background/50 text-muted-foreground hover:border-primary/20 hover:text-foreground'
-                }`}
+              className={`tab-pill focus-glow interactive-button ${hasFilter(filter) ? 'tab-pill-active' : ''}`}
             >
               {filter}
             </button>

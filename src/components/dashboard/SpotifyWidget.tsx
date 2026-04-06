@@ -1,13 +1,15 @@
 export default function SpotifyWidget() {
   return (
-    <div className="glass-panel rounded-lg border border-border overflow-hidden">
-      <div className="flex items-center justify-between p-4 border-b border-border">
-        <h3 className="text-foreground font-semibold text-sm">Play Now</h3>
+    <div className="bento-panel overflow-hidden">
+      <div className="border-b border-border/70 p-5">
+        <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Background focus</p>
+        <h3 className="mt-2 font-display text-2xl text-foreground">Play Now</h3>
+        <p className="mt-1 text-sm text-muted-foreground">Keep a steady soundtrack running alongside the board.</p>
       </div>
-      <div className="p-3">
+      <div className="p-4">
         <iframe 
           data-testid="embed-iframe" 
-          style={{ borderRadius: '12px' }} 
+          style={{ borderRadius: '20px' }} 
           src="https://open.spotify.com/embed/playlist/1qjIZaxHfw7yTTuSi4XSxx?utm_source=generator" 
           width="100%" 
           height="352" 
